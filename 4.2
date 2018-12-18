@@ -1,0 +1,157 @@
+                           4.DATABASE OBJECTS
+21.Drop the above table and recreate the following table with the name
+CustomerMaster.
+CustomerId Number(5) Primary key(Name of constraint is CustId_PK)
+CustomerName Varchar2(30) Not Null
+Addressl Varchar2(30) Not Null
+Address2 Varchar2(30)
+Gender Varchar2(l)
+Age Number(3)
+PhoneNo Number(10)
+DROP TABLE Suppliers;
+CREATE TABLE CustomerMaster
+              (CustomerId Number(5) constraint CustId_PK PRIMARY KEY,
+               CustomerName Varchar2(30) NOT NULL,
+               Address1 Varchar2(30) NOT NULL,
+               Address2 Varchar2(30),
+               Gender Varchar2(1),
+               Age Number(3),
+               PhoneNo Number(10));
+
+22.Create the AccountsMaster table with the following Columns. Use sequence to
+generate Account number
+Customerld Number(5)
+AccountNumber Number(10,2) Primary key(Name of constraint is
+Acc_PK)
+AccountType Char(3)
+LedgerBalance Number(10,2) Not Null
+Create table Accoutnmaster
+                  (customerid number(5),
+                  Accountnumber number(10) primary key(acno),
+                 accounttype char(3),
+                 ledgerbalance number(10) Not Null);
+	   Create sequence seq_ano
+		MINVALUE 101
+		MAXVALUE 10000
+		START WITH 101
+		INCREMENT BY 1
+		CACHE 101;
+23.Relate AccountsMaster table and CustomerMaster table through Customerld
+column with the constraint name Cust_acc
+Alter table Accountmaster ADD constraint ass_fk FOREIGN KEY(customerid) REFERENCES customermaster(customerid);
+
+24.Insert the following rows to the CustomerMaster table:
+• 1000, Allen, #115 Chicago, #115 Chicago, M, 25, 7878776
+• 1001, George, #116 France, #116 France, M, 25, 434524
+• 1002, Becker, #114 New York, #114 New York, M, 45, 431525
+Insert into customermaster values(1000, Allen, #115 Chicago, #115 Chicago, M, 25, 7878776);
+Insert into customermaster values(1001, George, #116 France, #116 France, M, 25, 4345240;
+Insert into customermaster values(1002, Becker, #114 New York, #114 New York, M, 45, 4315250;
+
+25.Modify the AccountMaster table with the Check constraint to ensure AccountType
+should be either NRI or IND.
+alter table Accountmaster add constraint ck_ac check(accountype='NRI' or accountype='IND');
+
+26.Insert 5 rows into the AccountsMaster table
+insert into account_master values(1000,121,"NRI",2000);
+insert into account_master values(1001,122,"IND",5000);
+insert into account_master values(1002,123,"NRI",4000);
+insert into account_master values(1003,124,"IND",6000);
+insert into account_master values(1004,125,"NRI",8000);
+
+27.Modify the AccountsMaster table keeping a Check constraint with the name
+Balance_Check for the Minimum Balance which should be greater than 5000.
+alter table Accountmaster add constraint 	Balance_check(ledger balance > 5000);
+ 
+28.Modify the AccountsMaster table such that if Customer is deleted from Customer
+table then all his details should be deleted from AccountsMaster table
+Delete from Accountmaster,customertable where customerid = 1001;
+
+29.Create Backup copy for the AccountsMaster table with the name ‘AccountDetails’.
+Create table accountdetails as select * from Accountmaster;
+
+30.Change the name of the AccountDetails table to ‘BackUpTable’ table.
+RENAME AccountDetails To BackUp;  
+                  or
+ALTER TABLE AccountDetails   
+RENAME TO BackUp;  
+
+31.Create a view ‘Acc_view’ with columns Customerld, CustomerName,
+AccountNumber, AccountType, and LedgerBalance from AccountsMaster. In the view
+Acc_view, the column names should be CustomerCode, AccountHolderName,
+AccountNumber, Type, and Balance for the respective columns from AccountsMaster table.
+CREATE VIEW Acc_view AS SELECT(Customerid,Customername,Accountnumber,AccountType,ledgerBalance)
+	from AccountMaster;
+
+32.Create a view on AccountsMaster table with name vAccs_Dtls. This view should
+list all customers whose AccountType is ‘IND’ and their balance amount should not be
+less than 10000. Using this view any DML operation should not violate the view
+conditions.
+CREATE VIEW vAccs_Dtls AS SELECT 	Accounttype,ledgerbalance from Accountmaster where accounttype = 'IND' and ledgerbalance < 10000;
+ 
+33.Create a view accsvw10 which will not allow DML statement against it.
+create a complex view ...from more than  two tables;
+Create view V_EMP_DEPT
+
+as Select e.Employee_name,d.Department_name
+
+from Employee e,Department d
+
+where e.Department_no=d.Department_no;
+34.Display the department from Staff table which has the highest salary by using
+Inline View.
+SELECT a.last_name, a.salary, a.department_id, b.maxsal
+  FROM employees a,
+       ( SELECT department_id, max(salary) maxsal
+         FROM employees
+         GROUP BY department_id ) b
+ WHERE a.department_id = b.department_id
+   AND a.salary = b.maxsal;
+
+35.List the top two highest earning employees in each department
+SELECT empno,ename,sal FROM (SELECT empno,ename,sal FROM emp ORDER BY sal DESC) WHERE ROWNUM <=2;
+
+36.Create a Sequence with the name Seq_Dept on Deptno column of Dept table. It
+should start from 40 and stop at 200. Increment parameter for the sequence
+Seq_Dept should be in step of 10.
+CREATE sequence SEQ_DEPT minvalue 40 start with 40
+	increment by 10 MAX VALUE 200 cache 40;
+ 
+37.Insert three sample rows by using the above sequence in Dept table
+create table departmentmaster(deptno number(50),Dname varchar2(25),location varchar2(25));
+	  insert into departmentmaster  values(seq_dept.NEXTVAL,'MARKETING','NEW DELHI');
+	  insert into departmentmaster  values(seq_dept.NEXTVAL,'SALES','chennai');
+	  insert into departmentmaster  values(seq_dept.NEXTVAL,'RESEARCH','BOSTON');
+
+38.Alter the above specified sequence with an increment by 5.
+ALTER SEQUENCE SEQ_DEPT
+   		increment by 5;
+39.Drop the Seq_Dept sequence.
+DROP sequence seq_dept;
+
+40.Create a Unique index with the name No_Name on DeptNo and Dname of Dept
+table.
+CREATE TABLE dept 
+    (deptno  NUMBER(2), 
+     dname   VARCHAR2(9), 
+     loc     VARCHAR2(10), 
+        CONSTRAINT unq_dname 
+        UNIQUE (dname) 
+    USING INDEX PCTFREE 20
+        TABLESPACE user_x
+        STORAGE (INITIAL 8K  NEXT 6K) ); 
+
+41.Get information on the index No_Name from the Data Dictionary.
+CREATE INDEX no_name on emp(empno);
+select * from emp;
+
+42. Create public synonym synEmp for the EMP table.
+create SYNONYM synemp for emp;
+ 
+43.Get Information on synonym synEmp from the Data Dictionary
+select * from synemp;
+
+ 
+ 
+
+
