@@ -1,0 +1,15 @@
+            3.2   SET OPERATORS
+1.Get the details of all products irrespective of the fact whether they are in previous
+set or current set.
+select * from previous_products UNION select * from current_products;
+
+2.Get the details of all products along with the repetition of those that were present
+both in the previous and current sets.
+select * from previous_products UNION ALL select * from current_products;
+
+3.Get the details of only those products which were present in the previous set and
+are still continuing.
+select * from previous_products INTERSECT select * from current_products;
+
+4.Get the details of all obsolete products (no longer continued).
+select * from current_products INTERSECT select * from previous_products;
