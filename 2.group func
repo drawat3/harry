@@ -1,0 +1,38 @@
+SQL (lab-2-Group functions)
+
+16. Display the Highest, Lowest, Total & Average salary of all staff. Label the columns
+Maximum, Minimum, Total and Average respectively. Round the result to nearest
+whole number.
+SELECT ROUND(MAX(salary),0) "Maximum",
+ROUND(MIN(salary),0) "Minimum",
+ROUND(SUM(salary),0) "Sum",
+ROUND(AVG(salary),0) "Average"
+FROM employees;
+
+17. Edit the above query and display the same for each Department Name.
+select round(max(staff_sal)) Highest,round(min(staff_sal)) Lowest,round(sum(staff_sal)) Total,
+round(avg(staff_sal)) Average from staff_master group by Dept_name;
+
+
+18. Write a query to display number of people in each Department. Output should
+display Department Code, Department Name and Number of People.
+Select dept_name, dept_code ,count(*) from Department_master group by dept_code and dept_name;
+
+
+19. Determine the number of managers without listing them. Label the column as
+‘Total Number of Managers’.
+select count(distinct(mgr_code)) as total_number_of_managers from staff_master;
+
+
+20. Display Manager Code, Manager Name and salary of lowest paid staff in that
+manager’s team. Exclude any group where minimum salary is less than 10000. Order
+the result on descending order of salary
+SELECT manager_code, manager_name, MIN(salary)
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING MIN(salary) > 10000
+ORDER BY MIN(salary) DESC;
+
+
+
